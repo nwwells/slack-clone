@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
@@ -6,14 +6,9 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 // http://stackoverflow.com/a/34015469/988941
 injectTapEventPlugin();
 
-class AppContainer extends Component {
-  render() {
-    return (
-      <MuiThemeProvider>
-        {this.props.children}
-      </MuiThemeProvider>
-    );
-  }
-}
+// eslint-disable-next-line react/prop-types
+const AppContainer = ({ children }) => (
+  <MuiThemeProvider>{children}</MuiThemeProvider>
+);
 
 export default AppContainer;

@@ -17,6 +17,17 @@ class Login extends Component {
     };
   }
 
+  componentWillMount() {
+    if (this.props.location.state) {
+      if (this.props.location.state.message) {
+        this.setState({
+          showNotificationSnackbar: true,
+          notificationSnackbarText: this.props.location.state.message,
+        });
+      }
+    }
+  }
+
   onSubmit = (e) => {
     e.preventDefault();
 
@@ -50,15 +61,6 @@ class Login extends Component {
         .catch(() => {
           this.setState({ signInError: true });
         })
-
-
-  componentWillMount() {
-    if (this.props.location.state) {
-      if (this.props.location.state.message) {
-        this.setState({ showNotificationSnackbar: true, notificationSnackbarText: this.props.location.state.message });
-      }
-    }
-  }
 
   handleErrorSnackbarRequestClose = () => {
     this.setState({
@@ -112,5 +114,21 @@ class Login extends Component {
     );
   }
 }
+
+Login.propTypes = {
+  location: {
+    state: {
+      message: React.PropTypes.string,
+    },
+  },
+};
+
+Login.defaultProps = {
+  location: {
+    state: {
+      message: '',
+    },
+  },
+};
 
 export default Login;

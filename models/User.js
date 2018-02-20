@@ -26,17 +26,17 @@ const UserSchema = mongoose.Schema({
   },
 });
 
-UserSchema.pre('save', function(next) {
-    this.local.username = this.local.username.toLowerCase();
+UserSchema.pre('save', function presave(next) {
+  this.local.username = this.local.username.toLowerCase();
 
-    next();
+  next();
 });
 
-UserSchema.methods.generateHash = function (password) {
+UserSchema.methods.generateHash = function generateHash(password) {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 };
 
-UserSchema.methods.validPassword = function (password) {
+UserSchema.methods.validPassword = function validPassword(password) {
   return bcrypt.compareSync(password, this.local.password);
 };
 

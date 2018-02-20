@@ -21,11 +21,11 @@ const messageSchema = mongoose.Schema({
   },
 });
 
-messageSchema.pre('save', function (next) {
-    this.channel = this.channel.toLowerCase();
-    this.user = this.user.toLowerCase();
+messageSchema.pre('save', function presave(next) {
+  this.channel = this.channel.toLowerCase();
+  this.user = this.user.toLowerCase();
 
-    next();
+  next();
 });
 
 module.exports = mongoose.model('Message', messageSchema);

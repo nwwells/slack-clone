@@ -36,6 +36,7 @@ UserList.propTypes = {
   title: React.PropTypes.string.isRequired,
   activeUser: React.PropTypes.string,
   loggedUser: React.PropTypes.string.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
   users: React.PropTypes.object.isRequired,
   setActiveUser: React.PropTypes.func.isRequired,
 };

@@ -1,7 +1,7 @@
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('../models/User');
 
-module.exports = function (config, passport) {
+module.exports = function setupPassport(config, passport) {
   passport.use('local-signup', new LocalStrategy({
     usernameField: 'username',
     passwordField: 'password',
@@ -20,9 +20,9 @@ module.exports = function (config, passport) {
             newUser.local.username = username.toLowerCase();
             newUser.local.password = newUser.generateHash(password);
             newUser.local.channels = [config.defaultChannel.toLowerCase()];
-            newUser.save((err, user) => {
-              if (err) {
-                throw err;
+            return newUser.save((saveErr) => {
+              if (saveErr) {
+                throw saveErr;
               }
               return done(null, newUser);
             });

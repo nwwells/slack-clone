@@ -5,7 +5,8 @@ moment.locale('fi');
 
 class MessageList extends Component {
   componentWillUpdate = () => {
-    this.shouldScrollBottom = this.node.scrollTop + this.node.offsetHeight === this.node.scrollHeight;
+    this.shouldScrollBottom =
+      this.node.scrollTop + this.node.offsetHeight === this.node.scrollHeight;
   }
 
   componentDidUpdate = () => {
@@ -21,7 +22,12 @@ class MessageList extends Component {
       const dateFormat = 'LLL';
 
       if (messages.length > 0) {
-        return (messages.map(message => <p key={message.date}><strong>{message.user}</strong> {moment(message.date).format(dateFormat)}<br /> {message.msg}</p>));
+        return (messages.map(message => (
+          <p key={message.date}>
+            <strong>{message.user}</strong> {moment(message.date).format(dateFormat)}
+            <br />{message.msg}
+          </p>
+        )));
       }
       return (<p>No messages yet.</p>);
     };
@@ -31,7 +37,11 @@ class MessageList extends Component {
 }
 
 MessageList.propTypes = {
-  messages: React.PropTypes.array,
+  messages: React.PropTypes.arrayOf({
+    date: React.PropTypes.date,
+    user: React.PropTypes.string,
+    msg: React.PropTypes.string,
+  }),
 };
 
 MessageList.defaultProps = {

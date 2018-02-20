@@ -34,6 +34,7 @@ const ChannelList = ({ channels, activeChannel, setActiveChannel, showJoinChanne
 
 ChannelList.propTypes = {
   activeChannel: React.PropTypes.string,
+  // eslint-disable-next-line react/forbid-prop-types
   channels: React.PropTypes.object.isRequired,
   setActiveChannel: React.PropTypes.func.isRequired,
   showJoinChannelDialog: React.PropTypes.func.isRequired,

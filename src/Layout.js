@@ -23,7 +23,7 @@ class Layout extends Component {
                     xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</div>}
           open={this.state.open} docked={false} onSetOpen={this.onSetOpen}
         >
-          <b onClick={() => this.setState({ open: true })}>Mains content</b>
+          <button onClick={() => this.setState({ open: true })}>Mains content</button>
         </Sidebar>
       </div>
 
