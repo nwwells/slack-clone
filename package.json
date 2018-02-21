@@ -6,8 +6,8 @@
   "scripts": {
     "heroku-postbuild": "webpack -p --config ./webpack.config.prod.js",
     "start": "node app.js",
-    "lint": "eslint config models src *.js*",
-    "lint:fix": "eslint --fix config models src *.js*",
+    "lint": "eslint config models src *.js test routes",
+    "lint:fix": "eslint --fix config models src *.js test routes",
     "test": "NODE_ENV=test mocha -R spec",
     "coverage": "NODE_ENV=test istanbul cover _mocha -- -R spec"
   },
