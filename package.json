@@ -9,7 +9,7 @@
     "lint": "eslint config models src *.js test routes",
     "lint:fix": "eslint --fix config models src *.js test routes",
     "test": "NODE_ENV=test mocha -R spec",
-    "coverage": "NODE_ENV=test istanbul cover _mocha -- -R spec"
+    "coverage": "NODE_ENV=test istanbul cover _mocha -- -R tap"
   },
   "author": "Anton Räihä",
   "private": true,
