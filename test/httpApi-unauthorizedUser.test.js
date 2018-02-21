@@ -1,13 +1,12 @@
+/* global it, before, afterEach, describe */
 const app = require('../app');
+
 const server = app.http;
 const mockgoose = app.mockgoose;
-const chai = require('chai'),
-  expect = chai.expect,
-  should = chai.should();
+const chai = require('chai');
 const request = require('supertest');
-const io = require('socket.io-client');
 
-const events = require('../events');
+const expect = chai.expect;
 
 const serverPort = 3001;
 const serverUrl = `http://localhost:${serverPort}`;
@@ -22,7 +21,7 @@ const apiUrls = {
   usernameExists: '/api/username/mikko',
 };
 
-const defaultUser = user = {
+const defaultUser = {
   username: 'mikko',
   password: 'mikko',
 };
@@ -57,7 +56,7 @@ describe('unauthorized user', () => {
             .post(apiUrls.register)
             .send(defaultUser)
             .expect(200)
-            .end((err, res) => {
+            .end(() => {
               request(serverUrl)
                     .post(apiUrls.register)
                     .send(defaultUser)
@@ -73,7 +72,7 @@ describe('unauthorized user', () => {
             .post(apiUrls.register)
             .send(defaultUser)
             .expect('set-cookie', /express.sid/)
-            .end((err, res) => {
+            .end(() => {
               request(serverUrl)
                     .post(apiUrls.authenticate)
                     .send(defaultUser)
@@ -89,7 +88,7 @@ describe('unauthorized user', () => {
           .post(apiUrls.register)
           .send(defaultUser)
           .expect('set-cookie', /express.sid/)
-          .end((err, res) => {
+          .end(() => {
             request(serverUrl)
                   .post(apiUrls.authenticate)
                   .send(Object.assign({}, defaultUser, { username: 'wrongusername' }))
@@ -105,7 +104,7 @@ describe('unauthorized user', () => {
             .post(apiUrls.register)
             .send(defaultUser)
             .expect('set-cookie', /express.sid/)
-            .end((err, res) => {
+            .end(() => {
               request(serverUrl)
                     .post(apiUrls.authenticate)
                     .send(Object.assign({}, defaultUser, { password: 'wrongpassword' }))
@@ -157,7 +156,7 @@ describe('unauthorized user', () => {
     request(serverUrl)
             .post(apiUrls.register)
             .send(defaultUser)
-            .end((err, res) => {
+            .end(() => {
               request(serverUrl)
                     .get(apiUrls.usernameExists)
                     .end((err, res) => {

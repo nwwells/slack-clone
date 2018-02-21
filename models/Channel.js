@@ -11,7 +11,7 @@ const channelSchema = mongoose.Schema({
 });
 
 
-channelSchema.pre('save', (next) => {
+channelSchema.pre('save', function presave(next) {
   this.name = this.name.toLowerCase();
 
   next();

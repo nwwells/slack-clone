@@ -1,13 +1,16 @@
+/* global it, beforeEach, afterEach, describe */
+
 const app = require('../app');
+
 const server = app.http;
 const mockgoose = app.mockgoose;
-const chai = require('chai'),
-  expect = chai.expect,
-  should = chai.should();
+const chai = require('chai');
 const request = require('supertest');
 const io = require('socket.io-client');
 
 const events = require('../events');
+
+const expect = chai.expect;
 
 const serverPort = 3001;
 const serverUrl = `http://localhost:${serverPort}`;
@@ -27,13 +30,13 @@ const apiUrls = {
   authenticate: '/api/authenticate',
 };
 
-const defaultUser = user = {
+const defaultUser = {
   username: 'mikko',
   password: 'mikko',
 };
 
 describe('chat server', () => {
-  beforeEach(function (done) {
+  beforeEach((done) => {
     server.listen(serverPort, () => {
       request(serverUrl)
                 .post(apiUrls.register)
@@ -58,8 +61,8 @@ describe('chat server', () => {
   });
 
 
-  it('should be able to connect with session id', function (done) {
-    this.client.on(events.connect, (data) => {
+  it('should be able to connect with session id', (done) => {
+    this.client.on(events.connect, () => {
       this.client.disconnect();
       done();
     });
@@ -90,13 +93,13 @@ describe('chat server', () => {
     });
   });
 
-  it('should emit online event to other users', function (done) {
+  it('should emit online event to other users', (done) => {
     const newUser = {
       username: 'jenni',
       password: 'jenni',
     };
 
-    this.client.on(events.connect, (data) => {
+    this.client.on(events.connect, () => {
       request(serverUrl)
                 .post(apiUrls.register)
                 .send(newUser)
@@ -122,13 +125,13 @@ describe('chat server', () => {
     });
   });
 
-  it('should emit offline event to other users when disconnecting', function (done) {
+  it('should emit offline event to other users when disconnecting', (done) => {
     const newUser = {
       username: 'jenni',
       password: 'jenni',
     };
 
-    this.client.on(events.connect, (data) => {
+    this.client.on(events.connect, () => {
       request(serverUrl)
                 .post(apiUrls.register)
                 .send(newUser)
@@ -154,10 +157,10 @@ describe('chat server', () => {
     });
   });
 
-  it('joining a channel that doesnt exist already should emit join event to that user', function (done) {
+  it('joining a channel that doesnt exist already should emit join event to that user', (done) => {
     const newChannel = 'channelthatdoesntexist';
 
-    this.client.on(events.connect, (data) => {
+    this.client.on(events.connect, () => {
       this.client.emit(events.join, newChannel);
     });
 
@@ -169,10 +172,10 @@ describe('chat server', () => {
     });
   });
 
-  it('joining a channel that doesnt exist already should emit join event to all clients of that user', function (done) {
+  it('joining a channel that doesnt exist already should emit join event to all clients of that user', (done) => {
     const newChannel = 'channelthatdoesntexist';
 
-    this.client.on(events.connect, (data) => {
+    this.client.on(events.connect, () => {
       request(serverUrl)
                 .post(apiUrls.authenticate)
                 .send(defaultUser)
@@ -199,10 +202,10 @@ describe('chat server', () => {
     });
   });
 
-  it('leaving a (joined) channel should emit leave event to that user', function (done) {
+  it('leaving a (joined) channel should emit leave event to that user', (done) => {
     const newChannel = 'channelthatdoesntexist';
 
-    this.client.on(events.connect, (data) => {
+    this.client.on(events.connect, () => {
       this.client.emit(events.join, newChannel);
     });
 
@@ -218,17 +221,17 @@ describe('chat server', () => {
     });
   });
 
-  it('sending a message to a (joined) channel should emit message event to all clients of that user', function (done) {
+  it('sending a message to a (joined) channel should emit message event to all clients of that user', (done) => {
     const msgInput = {
       room: 'channel',
       msg: 'msg',
     };
 
-    this.client.on(events.connect, (data) => {
+    this.client.on(events.connect, () => {
       this.client.emit(events.join, msgInput.room);
     });
 
-    this.client.on(events.join, (channel) => {
+    this.client.on(events.join, () => {
       request(serverUrl)
                 .post(apiUrls.authenticate)
                 .send(defaultUser)
@@ -258,7 +261,7 @@ describe('chat server', () => {
     });
   });
 
-  it('sending a message to a (joined) channel should emit message event to all users on that channel', function (done) {
+  it('sending a message to a (joined) channel should emit message event to all users on that channel', (done) => {
     const msgInput = {
       room: 'channel',
       msg: 'msg',
@@ -269,11 +272,11 @@ describe('chat server', () => {
       password: 'jenni',
     };
 
-    this.client.on(events.connect, (data) => {
+    this.client.on(events.connect, () => {
       this.client.emit(events.join, msgInput.room);
     });
 
-    this.client.on(events.join, (channel) => {
+    this.client.on(events.join, () => {
       request(serverUrl)
                 .post(apiUrls.register)
                 .send(newUser)
@@ -306,7 +309,7 @@ describe('chat server', () => {
     });
   });
 
-  it('sending a private message to another user should emit private message event to all clients of that user', function (done) {
+  it('sending a private message to another user should emit private message event to all clients of that user', (done) => {
     const newUser = {
       username: 'jenni',
       password: 'jenni',
@@ -318,7 +321,7 @@ describe('chat server', () => {
       msg: 'msg',
     };
 
-    this.client.on(events.connect, (data) => {
+    this.client.on(events.connect, () => {
       request(serverUrl)
                 .post(apiUrls.register)
                 .send(newUser)
