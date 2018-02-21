@@ -126,7 +126,7 @@ describe('authorized user', () => {
                 return done();
               });
           })
-          // .catch(thrown => done(thrown));
+          .catch(thrown => done(thrown));
       });
   });
 
