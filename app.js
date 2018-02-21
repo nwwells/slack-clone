@@ -34,34 +34,25 @@ if (process.env.NODE_ENV === 'test') {
   mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/chat_dev');
 }
 
-app.use(helmet());
-
-app.use(logger('dev'));
-app.use(compression());
-
-app.use(bodyParser.json());
-
-app.use(bodyParser.urlencoded({ extended: true }));
-
 const sessionStore = new MongoStore({ mongooseConnection: mongoose.connection });
-
-app.use(session({
+const sessionSettings = {
   key: 'express.sid',
   store: sessionStore,
   secret: process.env.SESSION_SECRET || config.session.secret,
   cookie: { httpOnly: false },
-}));
+};
+const middlewares = [
+  helmet(),
+  logger('dev'),
+  compression(),
+  bodyParser.json(),
+  bodyParser.urlencoded({ extended: true }),
+  session(sessionSettings),
+  passport.initialize(),
+  passport.session(),
+];
 
-app.use(passport.initialize());
-app.use(passport.session());
-
-passport.serializeUser((user, done) => {
-  done(null, user.local.username);
-});
-
-passport.deserializeUser((username, done) => {
-  done(null, username);
-});
+middlewares.forEach(middleware => app.use(middleware));
 
 app.use('/', routes);
 
