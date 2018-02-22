@@ -32,9 +32,25 @@ I didn't use any state container (like Redux) yet, but it might be useful in the
 ## Install & run
 The server includes webpack-dev-middleware & webpack-hot-middleware to show code changes on browser without refreshing
 
-```
+```bash
 npm install
 npm start
+```
+
+Also, docker:
+
+```bash
+docker build --tag slack-clone .
+docker run \
+  --interactive \
+  --tty \
+  --name slack-clone \
+  --rm \
+  --publish 3000:3000/tcp \
+  --expose 3000/tcp \
+  --link mongo \
+  --env 'MONGODB_URI=mongodb://mongo/chat_dev' \
+  slack-clone:latest
 ```
 
 ## Testing (Mocha & Chai)
